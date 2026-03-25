@@ -1,11 +1,34 @@
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { setSort, setOrder, setLanguage, searchRepos } from '../store/searchSlice';
 import type { SortOption, OrderOption } from '../types/github';
+import Filter from './Filter';
 import styles from './Filters.module.css';
 
-const LANGUAGES = [
-  '', 'JavaScript', 'TypeScript', 'Python', 'Java', 'Go',
-  'Rust', 'C++', 'C#', 'Ruby', 'PHP', 'Swift', 'Kotlin',
+const SORT_OPTIONS = [
+  { value: 'stars' as const, label: 'Звёзды' },
+  { value: 'forks' as const, label: 'Форки' },
+  { value: 'updated' as const, label: 'Обновление' },
+];
+
+const ORDER_OPTIONS = [
+  { value: 'desc' as const, label: 'По убыванию' },
+  { value: 'asc' as const, label: 'По возрастанию' },
+];
+
+const LANGUAGE_OPTIONS = [
+  { value: '', label: 'Все' },
+  { value: 'JavaScript', label: 'JavaScript' },
+  { value: 'TypeScript', label: 'TypeScript' },
+  { value: 'Python', label: 'Python' },
+  { value: 'Java', label: 'Java' },
+  { value: 'Go', label: 'Go' },
+  { value: 'Rust', label: 'Rust' },
+  { value: 'C++', label: 'C++' },
+  { value: 'C#', label: 'C#' },
+  { value: 'Ruby', label: 'Ruby' },
+  { value: 'PHP', label: 'PHP' },
+  { value: 'Swift', label: 'Swift' },
+  { value: 'Kotlin', label: 'Kotlin' },
 ];
 
 export default function Filters() {
@@ -14,13 +37,13 @@ export default function Filters() {
 
   if (totalCount === 0 && !language) return null;
 
-  const handleSort = (value: string) => {
-    dispatch(setSort(value as SortOption));
+  const handleSort = (value: SortOption) => {
+    dispatch(setSort(value));
     dispatch(searchRepos());
   };
 
-  const handleOrder = (value: string) => {
-    dispatch(setOrder(value as OrderOption));
+  const handleOrder = (value: OrderOption) => {
+    dispatch(setOrder(value));
     dispatch(searchRepos());
   };
 
@@ -31,32 +54,9 @@ export default function Filters() {
 
   return (
     <div className={styles.filters}>
-      <div className={styles.group}>
-        <span className={styles.label}>Сортировка:</span>
-        <select className={styles.select} value={sort} onChange={(e) => handleSort(e.target.value)}>
-          <option value="stars">Звёзды</option>
-          <option value="forks">Форки</option>
-          <option value="updated">Обновление</option>
-        </select>
-      </div>
-
-      <div className={styles.group}>
-        <span className={styles.label}>Порядок:</span>
-        <select className={styles.select} value={order} onChange={(e) => handleOrder(e.target.value)}>
-          <option value="desc">По убыванию</option>
-          <option value="asc">По возрастанию</option>
-        </select>
-      </div>
-
-      <div className={styles.group}>
-        <span className={styles.label}>Язык:</span>
-        <select className={styles.select} value={language} onChange={(e) => handleLanguage(e.target.value)}>
-          <option value="">Все</option>
-          {LANGUAGES.filter(Boolean).map((lang) => (
-            <option key={lang} value={lang}>{lang}</option>
-          ))}
-        </select>
-      </div>
+      <Filter label="Сортировка:" value={sort} options={SORT_OPTIONS} onChange={handleSort} />
+      <Filter label="Порядок:" value={order} options={ORDER_OPTIONS} onChange={handleOrder} />
+      <Filter label="Язык:" value={language} options={LANGUAGE_OPTIONS} onChange={handleLanguage} />
     </div>
   );
 }

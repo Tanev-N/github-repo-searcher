@@ -2,6 +2,19 @@ import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/tool
 import type { GithubRepo, SortOption, OrderOption, SearchResponse } from '../types/github';
 import { getSearchHistory, addToSearchHistory, removeFromSearchHistory, clearSearchHistory } from '../utils/localStorage';
 
+function sortRepos(items: GithubRepo[], sort: SortOption, order: OrderOption): GithubRepo[] {
+  const sorted = [...items];
+  const key = sort === 'stars' ? 'stargazers_count' : sort === 'forks' ? 'forks_count' : 'updated_at';
+
+  sorted.sort((a, b) => {
+    const av = key === 'updated_at' ? new Date(a[key]).getTime() : a[key];
+    const bv = key === 'updated_at' ? new Date(b[key]).getTime() : b[key];
+    return order === 'asc' ? av - bv : bv - av;
+  });
+
+  return sorted;
+}
+
 interface SearchState {
   query: string;
   repos: GithubRepo[];
@@ -38,6 +51,7 @@ export const searchRepos = createAsyncThunk(
     const state = (getState() as { search: SearchState }).search;
     const { query, sort, order, language, page, perPage } = state;
 
+    // * позволяет искать все репозитории при пустом запросе
     let q = encodeURIComponent(query.trim() || '*');
     if (language) {
       q += `+language:${encodeURIComponent(language)}`;
@@ -81,9 +95,10 @@ const searchSlice = createSlice({
     setPage(state, action: PayloadAction<number>) {
       state.page = action.payload;
     },
-    saveToHistory(state) {
-      if (state.query.trim()) {
-        state.history = addToSearchHistory(state.query.trim());
+    saveToHistory(state, action: PayloadAction<string | undefined>) {
+      const term = (action.payload ?? state.query).trim();
+      if (term) {
+        state.history = addToSearchHistory(term);
       }
     },
     removeHistoryItem(state, action: PayloadAction<string>) {
@@ -104,18 +119,9 @@ const searchSlice = createSlice({
         state.searched = true;
         state.totalCount = action.payload.total_count;
 
-        const items = [...action.payload.items];
-        const sortKey = state.sort === 'stars' ? 'stargazers_count'
-          : state.sort === 'forks' ? 'forks_count'
-          : 'updated_at';
-
-        items.sort((a, b) => {
-          const av = sortKey === 'updated_at' ? new Date(a[sortKey]).getTime() : a[sortKey];
-          const bv = sortKey === 'updated_at' ? new Date(b[sortKey]).getTime() : b[sortKey];
-          return state.order === 'asc' ? (av as number) - (bv as number) : (bv as number) - (av as number);
-        });
-
-        state.repos = items;
+        // GitHub API иногда возвращает неточный порядок,
+        // поэтому досортируем результат
+        state.repos = sortRepos(action.payload.items, state.sort, state.order);
       })
       .addCase(searchRepos.rejected, (state, action) => {
         state.loading = false;

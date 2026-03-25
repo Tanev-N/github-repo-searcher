@@ -15,7 +15,7 @@ export default function SearchBar() {
 
   const handleHistoryClick = (item: string) => {
     dispatch(setQuery(item));
-    dispatch(saveToHistory());
+    dispatch(saveToHistory(item));
     dispatch(searchRepos());
   };
 
