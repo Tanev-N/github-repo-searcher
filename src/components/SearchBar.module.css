@@ -1,0 +1,124 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form {
+  display: flex;
+  gap: 8px;
+}
+
+.inputWrapper {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  width: 100%;
+  padding: 10px 32px 10px 14px;
+  font-size: 16px;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.clearInput {
+  position: absolute;
+  right: 8px;
+  cursor: pointer;
+  color: #8c959f;
+  font-size: 18px;
+  line-height: 1;
+  padding: 2px 4px;
+  border-radius: 50%;
+  transition: color 0.15s;
+}
+
+.clearInput:hover {
+  color: #cf222e;
+}
+
+.input:focus {
+  border-color: #0969da;
+  box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.15);
+}
+
+.button {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  background-color: #238636;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.button:hover {
+  background-color: #2ea043;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.history {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: #656d76;
+}
+
+.historyItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px 2px 8px;
+  background: #f6f8fa;
+  border: 1px solid #d0d7de;
+  border-radius: 12px;
+  transition: background 0.15s;
+}
+
+.historyItem:hover {
+  background: #eaeef2;
+}
+
+.historyText {
+  cursor: pointer;
+}
+
+.historyRemove {
+  cursor: pointer;
+  color: #8c959f;
+  font-size: 15px;
+  line-height: 1;
+  padding: 0 2px;
+  border-radius: 50%;
+  transition: color 0.15s;
+}
+
+.historyRemove:hover {
+  color: #cf222e;
+}
+
+.clearBtn {
+  padding: 2px 8px;
+  background: none;
+  border: none;
+  color: #cf222e;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.clearBtn:hover {
+  text-decoration: underline;
+}
