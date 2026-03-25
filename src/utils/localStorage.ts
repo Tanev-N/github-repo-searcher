@@ -17,6 +17,12 @@ export function addToSearchHistory(query: string): string[] {
   return updated;
 }
 
+export function removeFromSearchHistory(query: string): string[] {
+  const updated = getSearchHistory().filter((item) => item !== query);
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(updated));
+  return updated;
+}
+
 export function clearSearchHistory(): string[] {
   localStorage.removeItem(HISTORY_KEY);
   return [];
