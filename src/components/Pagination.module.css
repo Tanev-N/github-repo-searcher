@@ -18,7 +18,9 @@
   background: #fff;
   cursor: pointer;
   color: #0969da;
-  transition: background 0.15s, border-color 0.15s;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
 }
 
 .navButton:hover:not(:disabled) {
@@ -52,7 +54,9 @@
   background: #fff;
   cursor: pointer;
   color: #1f2328;
-  transition: background 0.15s, border-color 0.15s;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
 }
 
 .pageButton:hover {

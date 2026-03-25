@@ -36,7 +36,7 @@ export default function Pagination() {
   const dispatch = useAppDispatch();
   const { page, perPage, totalCount } = useAppSelector((s) => s.search);
 
-  const totalPages = Math.min(Math.ceil(totalCount / perPage), 50); // GitHub API limits to 1000 results
+  const totalPages = Math.min(Math.ceil(totalCount / perPage), 50); // Предел гитхаба 1000 реп за запрос
 
   if (totalPages <= 1) return null;
 

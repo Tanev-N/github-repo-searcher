@@ -109,16 +109,3 @@
 .historyRemove:hover {
   color: #cf222e;
 }
-
-.clearBtn {
-  padding: 2px 8px;
-  background: none;
-  border: none;
-  color: #cf222e;
-  cursor: pointer;
-  font-size: 13px;
-}
-
-.clearBtn:hover {
-  text-decoration: underline;
-}
